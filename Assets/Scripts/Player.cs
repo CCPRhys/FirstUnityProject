@@ -26,7 +26,8 @@ public class Player : MonoBehaviour
         float vertical = Input.GetAxis("Vertical");
         float horizontal = Input.GetAxis("Horizontal");
 
-
+        float mouseX = Input.GetAxis("Mouse X");
+        float mouseY = Input.GetAxis("Mouse Y");
         Vector3 inputDirection = new Vector3(vertical, 0, horizontal);
 
         inputDirection.Normalize();
