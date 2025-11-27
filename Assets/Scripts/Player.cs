@@ -1,57 +1,24 @@
 using System.Threading;
 using UnityEngine;
+using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
-    bool inputLock = false;
-    public int health = 100;
-    public int damageAmount = 10;
-    public float walkSpeed = 10;
+    [SerializeField]
+    private float speed = 10;
 
-    private CharacterController characterController;
+    [SerializeField]
+    private CharacterController controller;
 
 
-    private void Start()
-    {
-        characterController = this.GetComponent<CharacterController>();
-    }
+    private Vector2 lastMovementInput;
 
-    // Update is called once per frame
     private void Update()
     {
-        if (!inputLock && Input.GetKeyDown(KeyCode.Space))
-        {
-            TakeDamage(damageAmount);
-        }
-
-        float vertical = Input.GetAxis("Vertical");
-        float horizontal = Input.GetAxis("Horizontal");
-
-        float mouseX = Input.GetAxis("Mouse X");
-        float mouseY = Input.GetAxis("Mouse Y");
-        Vector3 inputDirection = new Vector3(vertical, 0, horizontal);
-
-        inputDirection.Normalize();
-
-        characterController.Move(inputDirection * Time.deltaTime * walkSpeed);
-
-
+        controller.Move(lastMovementInput * Time.deltaTime);
     }
 
-
-    private bool TakeDamage(int amount)
+    public void MovementInput(InputAction.CallbackContext context)
     {
-        // health = health - amount;
-
-        health = Mathf.Clamp(health - amount, 0, 100);
-
-        Debug.Log("Health: " + health);
-
-        if(health <= 0)
-        {
-            return true;
-        }
-        return false;
+        lastMovementInput = context.ReadValue<Vector2>();
     }
-    // Change the function above from a void to a bool
-    // Return true with player has died
 }
